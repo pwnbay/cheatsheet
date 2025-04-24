@@ -1,0 +1,15 @@
+name: Publish on \# cheatsheet
+on: 
+  - workflow_dispatch
+  - push
+  - merge
+jobs:
+  Publish-On-Cheatsheet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: "Test"
