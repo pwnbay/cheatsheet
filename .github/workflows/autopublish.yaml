@@ -2,7 +2,6 @@ name: Publish on \# cheatsheet
 on: 
   - workflow_dispatch
   - push
-  - merge
 jobs:
   Publish-On-Cheatsheet:
     runs-on: ubuntu-latest
