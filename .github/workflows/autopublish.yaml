@@ -1,6 +1,8 @@
 name: Publish on \# cheatsheet
 on: 
   push:
+    branches:
+      - master
     paths:
       - 'text/**'
 
@@ -21,7 +23,7 @@ jobs:
       - name: Post Cheatsheet on Discord
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'http://localhost:8000/git/cheatsheet'
+          url: 'http://localhost:8000/cheatsheet/action'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json", "X-API-Key": "secret"}'
           data: ${{ steps.event-data.outputs.result }}
