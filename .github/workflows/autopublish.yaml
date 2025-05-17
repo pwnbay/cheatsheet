@@ -1,15 +1,28 @@
 name: Publish on \# cheatsheet
 on: 
-  - workflow_dispatch
-  - push
+  push:
+    paths:
+      - 'published/**'
+
 jobs:
   Publish-On-Cheatsheet:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v7.0.0
+      - name: Extract event data
+        id: event-data
+        uses: actions/github-script@v6
         with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
-          thread-name: "New cheatsheet just added"
-          content: "Test"
+          script: |
+            const eventData = {
+              ref: context.ref,
+              repository: context.repo,
+              event_name: context.eventName
+            }
+            return JSON.stringify(eventData)
+      - name: Post Cheatsheet on Discord
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'http://localhost:8000/git/cheatsheet'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json", "X-API-Key": "secret"}'
+          data: ${{ steps.event-data.outputs.result }}
