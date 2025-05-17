@@ -15,8 +15,7 @@ jobs:
           script: |
             const eventData = {
               ref: context.ref,
-              repository: context.repo,
-              commit: context.sha,
+              repository: context.repo
             }
             return JSON.stringify(eventData)
       - name: Post Cheatsheet on Discord
