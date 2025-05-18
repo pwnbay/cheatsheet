@@ -33,12 +33,9 @@ jobs:
           CHEATSHEET=$(basename "$CHANGED_FILE" .txt)
           echo "cheathsheet=$CHEATSHEET" >> $GITHUB_OUTPUT
 
-      # This step checks if we should stop the workflow
-      - name: Check stop condition
+      - name: Assert cheathsheet name is not empty
         if: steps.extract_name.outputs.cheathsheet == ''
-        run: |
-          echo "Stopping workflow because STOP_FLAG is set to '$STOP_FLAG'"
-          exit 1
+        run: exit 1
 
       - name: Create ANSI directory
         run: |
