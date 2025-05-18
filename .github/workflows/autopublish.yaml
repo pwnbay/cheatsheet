@@ -22,13 +22,21 @@ jobs:
         with:
           files: text/**.txt
 
+      - name: Debug
+        env: 
+          ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files[0] }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file"
+          done
+          echo "CHANGED_FILE=$CHANGED_FILE"
+
       - name: Assert cheathsheet name is not empty
         env: 
           CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files[0] }}
         if: ${{ env.CHANGED_FILE  == '' }}
-        run: |
-          echo "CHANGED_FILE=$CHANGED_FILE" >> $GITHUB_ENV
-          exit 1
+        run: exit 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
