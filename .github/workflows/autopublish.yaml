@@ -33,10 +33,17 @@ jobs:
           CHEATSHEET=$(basename "$CHANGED_FILE" .txt)
           echo "cheathsheet=$CHEATSHEET" >> $GITHUB_OUTPUT
 
+      # This step checks if we should stop the workflow
+      - name: Check stop condition
+        if: steps.extract_name.outputs.cheathsheet == ''
+        run: |
+          echo "Stopping workflow because STOP_FLAG is set to '$STOP_FLAG'"
+          exit 1
+
       - name: Create ANSI directory
         run: |
-          mkdir -p "ansi/${{ steps.extract_chapter.outputs.cheathsheet }}"
-          touch "ansi/${{ steps.extract_chapter.outputs.cheathsheet }}/.gitkeep"
+          mkdir -p "ansi/${{ steps.extract_name.outputs.cheathsheet }}"
+          touch "ansi/${{ steps.extract_name.outputs.cheathsheet }}/.gitkeep"
 
       - name: Commit and push generated ANSI files
         env:
@@ -44,8 +51,8 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add "ansi/${{ steps.extract_chapter.outputs.chapter_name }}"
-          git commit -m "Auto-generated ANSI files for ${{ steps.extract_chapter.outputs.chapter_name }}"
+          git add "ansi/${{ steps.extract_name.outputs.chapter_name }}"
+          git commit -m "Auto-generated ANSI files for ${{ steps.extract_name.outputs.chapter_name }}"
           git push
 
       - name: Extract event data
