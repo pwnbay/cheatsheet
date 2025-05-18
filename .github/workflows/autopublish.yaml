@@ -7,7 +7,6 @@ on:
     paths:
       - 'text/**'
 permissions: write-all
-
 jobs:
   Publish-On-Cheatsheet:
     runs-on: ubuntu-latest
@@ -29,10 +28,10 @@ jobs:
       - name: Extract name from changed file
         id: extract_name
         run: |
-          git diff --name-only HEAD
           CHANGED_FILE=$(git diff --name-only HEAD -- 'text/*.txt' | head -n 1)
           CHEATSHEET=$(basename "$CHANGED_FILE" .txt)
           echo "cheathsheet=$CHEATSHEET" | tee $GITHUB_OUTPUT
+          git diff --name-only HEAD
 
       - name: Assert cheathsheet name is not empty
         if: steps.extract_name.outputs.cheathsheet == ''
