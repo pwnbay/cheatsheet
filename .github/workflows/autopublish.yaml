@@ -30,7 +30,7 @@ jobs:
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file"
           done
-          echo "CHANGED_FILE=$CHANGED_FILE"
+          echo "CHANGED_FILE=${ALL_CHANGED_FILES:0:1}"
 
       - name: Assert cheathsheet name is not empty
         env: 
