@@ -16,26 +16,33 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get all changed markdown files
+        id: changed-markdown-files
+        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        with:
+          files: text/**.txt
+
+      - name: List all changed files markdown files
+        if: steps.changed-markdown-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+
+      - name: Assert cheathsheet name is not empty
+        if: steps.extract_name.outputs.cheathsheet == ''
+        run: exit 1
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-
       #- name: Install dependencies
       #  run: pip install any-package-you-need
 
-      - name: Extract name from changed file
-        id: extract_name
-        run: |
-          CHANGED_FILE=$(git diff --name-only HEAD -- 'text/*.txt' | head -n 1)
-          CHEATSHEET=$(basename "$CHANGED_FILE" .txt)
-          echo "cheathsheet=$CHEATSHEET" | tee $GITHUB_OUTPUT
-          git diff --name-only HEAD
-
-      - name: Assert cheathsheet name is not empty
-        if: steps.extract_name.outputs.cheathsheet == ''
-        run: exit 1
 
       - name: Create ANSI directory
         run: |
