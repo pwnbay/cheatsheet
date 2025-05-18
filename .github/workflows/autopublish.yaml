@@ -24,13 +24,11 @@ jobs:
 
       - name: Debug
         env: 
-          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_modified_files }}
         run: |
-          echo $CHANGED_FILE | jq '.[0]'
+          echo $CHANGED_FILE | cut -d ' ' -f 1 >> $GITHUB_ENV
 
       - name: Assert cheathsheet name is not empty
-        env: 
-          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files[0] }}
         if: ${{ env.CHANGED_FILE  == '' }}
         run: exit 1
 
