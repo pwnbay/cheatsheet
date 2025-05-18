@@ -45,8 +45,8 @@ jobs:
 
       - name: Create ANSI directory
         run: |
-          mkdir -p "ansi/${{ env.CHANGED_FILE }}"
-          touch "ansi/${{ env.CHANGED_FILE }}/.gitkeep"
+          mkdir -p "ansi/${{ steps.extract.outputs.CHANGED_FILE }}"
+          touch "ansi/${{ steps.extract.outputs.CHANGED_FILE }}/.gitkeep"
 
       - name: Commit and push generated ANSI files
         env:
@@ -54,8 +54,8 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add "ansi/${{ env.CHANGED_FILE }}"
-          git commit -m "Auto-generated ANSI files for ${{ env.CHANGED_FILE }}"
+          git add "ansi/${{ steps.extract.outputs.CHANGED_FILE }}"
+          git commit -m "Auto-generated ANSI files for ${{ steps.extract.outputs.CHANGED_FILE }}"
           git push
 
       - name: Extract event data
