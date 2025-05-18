@@ -18,22 +18,17 @@ jobs:
 
       - name: Get all changed markdown files
         id: changed-markdown-files
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files
         with:
           files: text/**.txt
 
-      - name: List all changed files markdown files
-        if: steps.changed-markdown-files.outputs.any_changed == 'true'
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
-        run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
-          done
-
       - name: Assert cheathsheet name is not empty
-        if: steps.extract_name.outputs.cheathsheet == ''
-        run: exit 1
+        env: 
+          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files[0] }}
+        if: ${{ CHANGED_FILE }} == ''
+        run: |
+          echo $CHANGED_FILE
+          exit 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
