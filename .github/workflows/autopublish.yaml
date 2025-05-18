@@ -24,7 +24,7 @@ jobs:
 
       - name: Debug
         env: 
-          ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
         run: |
           echo $CHANGED_FILE | jq '.[0]'
 
