@@ -22,15 +22,16 @@ jobs:
         with:
           files: text/**.txt
 
-      - name: Debug
+      - name: Extract modified file name
+        id: extract
         env: 
           CHANGED_FILE: ${{ steps.modified-files.outputs.all_modified_files }}
         run: echo "CHANGED_FILE=$(echo "${{ env.CHANGED_FILE }}" | cut -d " " -f 1)" >> $GITHUB_OUTPUT
 
       - name: Assert cheathsheet name is not empty
-        if: ${{ steps.vars.outputs.CHANGED_FILE == '' }}
+        if: ${{ steps.extract.outputs.CHANGED_FILE == '' }}
         run: |
-          echo "${{ steps.vars.outputs.CHANGED_FILE }}"
+          echo "${{ steps.extract.outputs.CHANGED_FILE }}"
           exit 1
 
       - name: Set up Python
