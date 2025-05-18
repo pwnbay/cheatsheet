@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - tmp
     paths:
       - 'text/**'
 
@@ -27,3 +28,4 @@ jobs:
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json", "X-API-Key": "secret"}'
           data: ${{ steps.event-data.outputs.result }}
+          timeout: 15000
