@@ -1,2 +1,0 @@
-this is a test file.
-Then I append more content so I can test the update.
