@@ -25,12 +25,9 @@ jobs:
       - name: Debug
         env: 
           ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
-          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files[0] }}
+          CHANGED_FILE: ${{ steps.changed-markdown-files.outputs.all_changed_files.split(' ')[0] }}
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file"
-          done
-          echo "CHANGED_FILE=${ALL_CHANGED_FILES:0:1}"
+          echo $CHANGED_FILE
 
       - name: Assert cheathsheet name is not empty
         env: 
