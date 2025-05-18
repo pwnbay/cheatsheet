@@ -4,8 +4,8 @@ on:
     branches:
       - master
       - tmp
-    #paths:
-    #  - 'text/**'
+    paths:
+      - 'text/**'
 permissions: write-all
 
 jobs:
@@ -29,6 +29,7 @@ jobs:
       - name: Extract name from changed file
         id: extract_name
         run: |
+          git diff --name-only HEAD
           CHANGED_FILE=$(git diff --name-only HEAD -- 'text/*.txt' | head -n 1)
           CHEATSHEET=$(basename "$CHANGED_FILE" .txt)
           echo "cheathsheet=$CHEATSHEET" | tee $GITHUB_OUTPUT
